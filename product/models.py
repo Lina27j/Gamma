@@ -4,7 +4,7 @@ class Product(models.Model):
     name            = models.CharField(max_length=200, null=False, verbose_name='Product Name')
     features        = models.TextField(null=False, default='')
     certificate     = models.TextField(null=False, default='')
-    image_url       = models.URLField(blank=True)
+    image           = models.ImageField(upload_to='products/', blank=True, null=True)
     height          = models.IntegerField()
     depth           = models.IntegerField()
     width           = models.IntegerField()
