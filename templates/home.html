@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Products - Gamma{% endblock %}
+
+{% block content %}
+    <h1>Our Products</h1>
+
+    {% if products %}
+        <div class="product-list">
+            {% for product in products %}
+                <div class="product-card">
+                    <h2>{{ product.name }}</h2>
+                    <p>{{ product.description }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No products available yet.</p>
+    {% endif %}
+{% endblock %}

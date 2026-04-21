@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from django.shortcuts import render
 from .models import Product,ProductVariant,Image
 from .serializers import ProductSerializer,ProductVariantSerializer, ImageSerializer
 
@@ -13,3 +14,7 @@ class ProductVariantViewSet(viewsets.ModelViewSet):
 class ImageViewSet(viewsets.ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
+
+def home(request):
+    products = Product.objects.all()
+    return render(request, 'home.html', {'products': products})
