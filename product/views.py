@@ -18,3 +18,14 @@ class ImageViewSet(viewsets.ModelViewSet):
 def home(request):
     products = Product.objects.all()
     return render(request, 'home.html', {'products': products})
+
+def product_list(request):
+    products = Product.objects.all()
+    return render(request, 'products.html', {'products': products})
+
+def home(request):
+    images = list(range(1, 32))  
+    pages = [images[i:i+9] for i in range(0, len(images), 9)]
+    return render(request, 'home.html', {
+        'pages': pages
+    })

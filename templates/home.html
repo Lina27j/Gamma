@@ -1,20 +1,115 @@
 {% extends 'base.html' %}
-
-{% block title %}Products - Gamma{% endblock %}
+{% load static %}
 
 {% block content %}
-    <h1>Our Products</h1>
 
-    {% if products %}
-        <div class="product-list">
-            {% for product in products %}
-                <div class="product-card">
-                    <h2>{{ product.name }}</h2>
-                    <p>{{ product.description }}</p>
-                </div>
-            {% endfor %}
+<section class="hero">
+
+    <div class="hero-text">
+        <p class="small-text">RELIABLE . PRECISE . BUILT TO LAST</p>
+
+        <h1>
+            ENGINEERED TO <br>
+            <span class="highlight">PERFORM</span>
+        </h1>
+
+        <p class="description">
+            High-quality 19” cabinets and IP rated enclosures for data centers,
+            telecom and industrial applications.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="#" class="btn btn-primary">Request For Quotation</a>
+            <a href="#" class="btn btn-outline">Explore Products</a>
         </div>
-    {% else %}
-        <p>No products available yet.</p>
-    {% endif %}
+
+        <div class="track">
+            <a href="#" class="track-link">
+                <img src="{% static 'images/tracking.png' %}" class="track-icon" alt="Track request icon">
+                <span>Track your RFQ request</span>
+                <span class="track-arrow">→</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="hero-image">
+        <img src="{% static 'images/' %}" alt="Gamma Factory Photo">
+    </div>
+
+</section>
+
+<section class="projects">
+
+    <div class="projects-header">
+        <h2>Projects</h2>
+        <p>
+            We are proud to have our products implemented in a wide range of leading projects across the Kingdom and worldwide.
+        </p>
+    </div>
+
+    <div class="projects-slider">
+
+        {% for page in pages %}
+            <div class="projects-page">
+                {% for i in page %}
+                    <div class="projects-card">
+                        <img src="{% static 'images/projects/P' %}{{ i }}.png" alt="Project logo {{ i }}">
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<section class="stats-bar">
+
+    <div class="stat-item">
+        <h3>+15</h3>
+        <p>Years Experience</p>
+    </div>
+
+    <div class="stat-item">
+        <h3>200K+</h3>
+        <p>Cabinets Installed</p>
+    </div>
+
+    <div class="stat-item">
+        <h3>7000 SQM</h3>
+        <p>Factory Area</p>
+    </div>
+
+    <div class="stat-item">
+        <h3>Robotic</h3>
+        <p>Advanced Manufacturing</p>
+    </div>
+
+    <div class="stat-item">
+        <h3>ISO</h3>
+        <p>9001 / 14001 Certified</p>
+    </div>
+
+    <div class="stat-item">
+        <h3>KSA</h3>
+        <p>Saudi Made</p>
+    </div>
+
+    <div class="stat-item">
+        <h3>LC</h3>
+        <p>Local Content</p>
+    </div>
+
+    <div class="stat-item">
+        <h3>2030</h3>
+        <p>Vision Alignment</p>
+    </div>
+
+    <div class="stat-item">
+        <h3>Global</h3>
+        <p>Export Worldwide</p>
+    </div>
+
+</section>
+
 {% endblock %}

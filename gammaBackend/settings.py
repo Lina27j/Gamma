@@ -113,16 +113,13 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# ─── STATIC FILES (CSS, JS, images of your app) ───────────────────
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static'  # your dev static folder
+    BASE_DIR / 'static'  
 ]
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # where collectstatic puts files
+STATIC_ROOT = BASE_DIR / 'staticfiles'  
 
-# ─── MEDIA FILES (user uploads: product images, etc.) ─────────────
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

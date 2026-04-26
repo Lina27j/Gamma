@@ -1,0 +1,221 @@
+/* ========== RESET ========== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #0b2742;
+    background: #ffffff;
+    padding-bottom: 78px;
+}
+
+/* ========== BUTTONS ========== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: #ff5a1f;
+    color: #ffffff;
+}
+
+.btn-outline {
+    border: 1px solid #0b2742;
+    color: #0b2742;
+    background: transparent;
+}
+
+/* ========== HERO ========== */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    padding: 80px;
+    background: linear-gradient(to right, #f8fafc 60%, #eef3f7 100%);
+    border-radius: 16px;
+}
+
+.hero-text {
+    max-width: 520px;
+}
+
+.small-text {
+    font-size: 12px;
+    color: #8a97a3;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+.hero-text h1 {
+    font-size: 50px;
+    line-height: 1.05;
+    margin: 10px 0;
+    color: #0b2742;
+}
+
+.highlight {
+    color: #ff5a1f;
+}
+
+.description {
+    color: #5f6f7f;
+    margin-bottom: 22px;
+    line-height: 1.6;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+/* ========== TRACK REQUEST ========== */
+.track {
+    margin-top: 18px;
+}
+
+.track-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #0b2742;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.track-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.track-arrow {
+    font-size: 18px;
+    transition: 0.25s ease;
+}
+
+.track-link:hover {
+    color: #ff5a1f;
+}
+
+.track-link:hover .track-arrow {
+    transform: translateX(6px);
+}
+
+/* ========== HERO IMAGE ========== */
+.hero-image img {
+    width: 320px;
+    opacity: 0.95;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.08));
+}
+
+/* ========== PROJECTS ========== */
+.projects {
+    padding: 80px;
+    background: #ffffff;
+    text-align: center;
+}
+
+.projects-header h2 {
+    margin: 0;
+    font-size: 40px;
+    color: #0b2742;
+}
+
+.projects-header p {
+    max-width: 750px;
+    margin: 12px auto 40px;
+    color: #5f6f7f;
+    line-height: 1.6;
+}
+
+.projects-slider {
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 20px;
+    cursor: grab;
+}
+
+.projects-page {
+    min-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    scroll-snap-align: start;
+}
+
+
+.projects-card {
+    height: 160px;
+    background: #ffffff;
+    border: 8px solid #eef2f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.projects-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.06);
+}
+
+.projects-card img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+}
+
+
+/* ========== FIXED STATS BAR ========== */
+.stats-bar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 50;
+
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+
+    background: #ffffff;
+    border-top: 1px solid #e5eaf0;
+    box-shadow: 0 -8px 25px rgba(0,0,0,0.06);
+}
+
+.stat-item {
+    text-align: center;
+    padding: 14px 8px;
+    border-right: 1px solid #eef2f6;
+}
+
+.stat-item:last-child {
+    border-right: none;
+}
+
+.stat-item h3 {
+    color: #ff5a1f;
+    font-size: 15px;
+    margin: 0;
+}
+
+.stat-item p {
+    font-size: 9px;
+    color: #5f6f7f;
+    margin: 4px 0 0;
+    text-transform: uppercase;
+    font-weight: 600;
+}

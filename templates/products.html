@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+
+<h1>Our Products</h1>
+
+{% for product in products %}
+
+    <div style="border:1px solid #ccc; padding:15px; margin:10px; border-radius:8px;">
+
+        <h2>{{ product.name }}</h2>
+
+        <p><strong>Features:</strong> {{ product.features }}</p>
+        <p><strong>Certificate:</strong> {{ product.certificate }}</p>
+
+        <h3>Images:</h3>
+
+        {% for img in product.image.all %}
+            {% if img.image %}
+                <img src="{{ img.image.url }}" alt="{{ img.name }}" width="200">
+            {% endif %}
+        {% empty %}
+            <p>No images available</p>
+        {% endfor %}
+
+        <h3>Variants:</h3>
+
+        {% for variant in product.variants.all %}
+            <div style="margin-left:15px; padding:10px; border:1px dashed #aaa; margin-bottom:10px;">
+                
+                <p><strong>Height:</strong> {{ variant.height_u }}U</p>
+                <p><strong>Width:</strong> {{ variant.width_mm }} mm</p>
+                <p><strong>Depth:</strong> {{ variant.depth_mm }} mm</p>
+                <p><strong>Color:</strong> {{ variant.color }}</p>
+                <p><strong>SKU:</strong> {{ variant.sku }}</p>
+
+            </div>
+        {% empty %}
+            <p>No variants available</p>
+        {% endfor %}
+
+    </div>
+
+{% endfor %}
+
+{% endblock %}
