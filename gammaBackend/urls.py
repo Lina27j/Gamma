@@ -8,4 +8,3 @@ urlpatterns = [
     path('', home, name='home'),
     path('products/', product_list, name='products'),
 ]
-
