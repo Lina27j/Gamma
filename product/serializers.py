@@ -9,7 +9,9 @@ class ImageSerializer(serializers.ModelSerializer):
 class ProductVariantSerializer(serializers.ModelSerializer):
     class Meta:
         model  = ProductVariant
-        fields = ['id', 'height_u', 'width_mm', 'depth_mm', 'color', 'sku', 'is_active']
+        fields = ['id','height_U','width_mm','depth_mm', 'height_mm',
+            'depth_rail_mm','static_load_kg','description','color',
+            'sku','is_active','data_sheet','uploaded_at']
 
 class ProductSerializer(serializers.ModelSerializer):
     variants   = ProductVariantSerializer(many=True, read_only=True)

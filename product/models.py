@@ -16,28 +16,25 @@ class Product(models.Model):
     
 class ProductVariant(models.Model):   
 
-    HEIGHT_CHOICES = [
-    (18, '18U'),
-    (21, '21U'),
-    (24, '24U'),
-    (26, '26U'),
-    (32, '32U'),
-]
+    
+    HEIGHT_U_VALUES = [6, 9, 12, 15, 18, 21, 24, 26, 32, 36, 42, 45, 47]
+    HEIGHT_U_CHOICES = [(i, f'{i}U') for i in HEIGHT_U_VALUES]
 
-    DIMENSION_CHOICES = [
-    (300, '300mm'),
-    (400, '400mm'),
-    (500, '500mm'),
-    (600, '600mm'),
-    (700, '700mm'),
-    (800, '800mm'),
-    (900, '900mm'),
-    (1000, '1000mm'),
-]
+    DIMENSION_VALUES = [100, 250, 300, 450, 510, 600, 700, 800, 1000, 1200]
+    DIMENSION_CHOICES = [(i, f'{i}mm') for i in DIMENSION_VALUES]
+
+    HEIGHT_MM_VALUES = [365, 495, 630, 760, 895, 985, 1100, 1200, 1500, 1720, 2020, 2160, 2250]
+    HEIGHT_MM_CHOICES = [(i, f'{i}mm') for i in HEIGHT_MM_VALUES]
+
+    DEPTH_RAIL_VALUES = [350, 500, 600, 650, 700, 800, 850, 900, 1000, 1050, 1100]
+    DEPTH_RAIL_CHOICES = [(i, f'{i}mm') for i in DEPTH_RAIL_VALUES]
+
+    STATIC_LOAD_VALUES = [40, 400, 500, 600, 800, 1100]
+    STATIC_LOAD_CHOICES = [(i, f'{i}kg') for i in STATIC_LOAD_VALUES]
 
     COLOR_CHOICES = [
+        ('RAL 9005', 'BLACK (RAL 9005)'),
         ('RAL7035', 'Light Gray (RAL 7035)'),
-        ('custom', 'Custom on Request'),
     ]
 
     product = models.ForeignKey(
@@ -46,11 +43,12 @@ class ProductVariant(models.Model):
         related_name='variants'
     )
 
-    height_mm = models.PositiveSmallIntegerField(choices=HEIGHT_CHOICES)
+    height_U = models.PositiveSmallIntegerField(null=True,choices=HEIGHT_U_CHOICES)
     width_mm = models.PositiveIntegerField(choices=DIMENSION_CHOICES)
     depth_mm = models.PositiveIntegerField(choices=DIMENSION_CHOICES)
-    depth_rail_mm = models.PositiveIntegerField(null=True, choices=DIMENSION_CHOICES)
-    static_load_kg = models.PositiveIntegerField(null=True, choices=DIMENSION_CHOICES)
+    height_mm = models.PositiveSmallIntegerField(choices=HEIGHT_MM_CHOICES)
+    depth_rail_mm = models.PositiveIntegerField(null=True, choices=DEPTH_RAIL_CHOICES)
+    static_load_kg = models.PositiveIntegerField(null=True, choices=STATIC_LOAD_CHOICES)
     description = models.TextField(null=False, default='')
 
     color     = models.CharField(max_length=20, choices=COLOR_CHOICES, default='RAL7035')
