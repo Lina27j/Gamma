@@ -1,48 +1,104 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Products{% endblock %}
+{% block title %}Product Catalog - GAMMA Factory{% endblock %}
 
 {% block content %}
 
-<h1>Our Products</h1>
+<div class="breadcrumb-section breadcrumb-bg">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="breadcrumb-text">
+					<p>Industrial Metal Enclosures</p>
+					<h1>Product Catalog</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-{% for product in products %}
+<div class="product-section mt-50 mb-50">
+	<div class="container">
 
-    <div style="border:1px solid #ccc; padding:15px; margin:10px; border-radius:8px;">
+		<form class="search-form" method="GET" action="{% url 'products' %}">
+			<input type="text" name="search" placeholder="Search products..." value="{{ search }}">
+			{% if category != 'all' %}<input type="hidden" name="filter" value="{{ category }}">{% endif %}
+			<button type="submit"><i class="fas fa-search"></i> Search</button>
+		</form>
 
-        <h2>{{ product.name }}</h2>
+		<div class="filter-btns">
+			<a href="{% url 'products' %}{% if search %}?search={{ search }}{% endif %}" class="filter-btn {% if category == 'all' %}active{% endif %}">All</a>
+			<a href="?filter=data-center{% if search %}&search={{ search }}{% endif %}" class="filter-btn {% if category == 'data-center' %}active{% endif %}">Data Center</a>
+			<a href="?filter=free-stand{% if search %}&search={{ search }}{% endif %}"  class="filter-btn {% if category == 'free-stand' %}active{% endif %}">Free Stand</a>
+			<a href="?filter=wall-mount{% if search %}&search={{ search }}{% endif %}"  class="filter-btn {% if category == 'wall-mount' %}active{% endif %}">Wall Mount</a>
+			<a href="?filter=outdoor{% if search %}&search={{ search }}{% endif %}"     class="filter-btn {% if category == 'outdoor' %}active{% endif %}">Outdoor</a>
+			<a href="?filter=telecom{% if search %}&search={{ search }}{% endif %}"     class="filter-btn {% if category == 'telecom' %}active{% endif %}">Telecom</a>
+		</div>
 
-        <p><strong>Features:</strong> {{ product.features }}</p>
-        <p><strong>Certificate:</strong> {{ product.certificate }}</p>
+		<p class="catalog-meta">
+			Showing <span>{{ products.start_index }} – {{ products.end_index }}</span> of <span>{{ total }}</span> products
+			{% if search %} for "<em>{{ search }}</em>"{% endif %}
+		</p>
 
-        <h3>Images:</h3>
+		<div class="row">
+			{% for product in products %}
+			<div class="col-lg-4 col-md-6 mb-4 d-flex">
+				<div class="single-product-item w-100 d-flex flex-column" style="border:1px solid #f0f0f0; border-radius:4px; overflow:hidden;">
+					<div class="product-image" style="height:220px; overflow:hidden;">
+						<a href="{% url 'product_detail' product.id %}">
+							{% with product.image.first as img %}
+								{% if img %}
+									<img src="{{ img.image.url }}" alt="{{ product.name }}" style="width:100%; height:220px; object-fit:cover;">
+								{% else %}
+									<img src="{% static 'assets/img/products/product-img-1.jpg' %}" alt="{{ product.name }}" style="width:100%; height:220px; object-fit:cover;">
+								{% endif %}
+							{% endwith %}
+						</a>
+					</div>
+					<div class="d-flex flex-column flex-grow-1" style="padding:20px 16px 16px;">
+						<h3 style="font-size:17px; margin-bottom:8px;">{{ product.name }}</h3>
+						{% if product.features %}
+						<p style="font-size:13px; color:#666; flex-grow:1; margin-bottom:14px;">{{ product.features|truncatechars:90 }}</p>
+						{% else %}
+						<p style="flex-grow:1;"></p>
+						{% endif %}
+						<a href="{% url 'product_detail' product.id %}" class="cart-btn" style="align-self:center;"><i class="fas fa-eye"></i> View Details</a>
+					</div>
+				</div>
+			</div>
+			{% empty %}
+			<div class="col-12 text-center">
+				<p>No products found.</p>
+			</div>
+			{% endfor %}
+		</div>
 
-        {% for img in product.image.all %}
-            {% if img.image %}
-                <img src="{{ img.image.url }}" alt="{{ img.name }}" width="200">
-            {% endif %}
-        {% empty %}
-            <p>No images available</p>
-        {% endfor %}
+		{% if products.paginator.num_pages > 1 %}
+		<div class="catalog-pagination">
+			{% if products.has_previous %}
+			<a href="?page={{ products.previous_page_number }}{% if category != 'all' %}&filter={{ category }}{% endif %}{% if search %}&search={{ search }}{% endif %}">&laquo;</a>
+			{% else %}
+			<span class="disabled">&laquo;</span>
+			{% endif %}
 
-        <h3>Variants:</h3>
+			{% for num in products.paginator.page_range %}
+				{% if products.number == num %}
+				<span class="current">{{ num }}</span>
+				{% else %}
+				<a href="?page={{ num }}{% if category != 'all' %}&filter={{ category }}{% endif %}{% if search %}&search={{ search }}{% endif %}">{{ num }}</a>
+				{% endif %}
+			{% endfor %}
 
-        {% for variant in product.variants.all %}
-            <div style="margin-left:15px; padding:10px; border:1px dashed #aaa; margin-bottom:10px;">
-                
-                <p><strong>Height:</strong> {{ variant.height_u }}U</p>
-                <p><strong>Width:</strong> {{ variant.width_mm }} mm</p>
-                <p><strong>Depth:</strong> {{ variant.depth_mm }} mm</p>
-                <p><strong>Color:</strong> {{ variant.color }}</p>
-                <p><strong>SKU:</strong> {{ variant.sku }}</p>
+			{% if products.has_next %}
+			<a href="?page={{ products.next_page_number }}{% if category != 'all' %}&filter={{ category }}{% endif %}{% if search %}&search={{ search }}{% endif %}">&raquo;</a>
+			{% else %}
+			<span class="disabled">&raquo;</span>
+			{% endif %}
+		</div>
+		{% endif %}
 
-            </div>
-        {% empty %}
-            <p>No variants available</p>
-        {% endfor %}
-
-    </div>
-
-{% endfor %}
+	</div>
+</div>
 
 {% endblock %}

@@ -67,3 +67,35 @@ class Image(models.Model):
         on_delete=models.CASCADE,
         related_name='image'
     )
+
+class Quotation(models.Model):
+
+    MATERIAL_CHOICES = [
+        ('galvanised', 'Galvanised'),
+        ('steel',      'Steel'),
+        ('aluminum',   'Aluminum'),
+        ('stainless',  'Stainless Steel'),
+    ]
+
+    DOOR_CHOICES = [
+        ('glass',       'Glass'),
+        ('metal',       'Metal'),
+        ('perforated',  'Perforated'),
+    ]
+
+    name           = models.CharField(max_length=100)
+    company        = models.CharField(max_length=100)
+    email          = models.EmailField()
+    phone          = models.CharField(max_length=20, blank=True)
+    product        = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)
+    quantity       = models.PositiveIntegerField(null=True, blank=True)
+    number_of_fans = models.PositiveIntegerField(null=True, blank=True)
+    material_type  = models.CharField(max_length=20, choices=MATERIAL_CHOICES, blank=True)
+    door_type      = models.CharField(max_length=20, choices=DOOR_CHOICES, blank=True)
+    accessories    = models.TextField(blank=True)
+    reference_file = models.FileField(upload_to='quotations/', blank=True, null=True)
+    message        = models.TextField(blank=True)
+    submitted_at   = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.company}"

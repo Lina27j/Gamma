@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} - GAMMA Factory{% endblock %}
+
+{% block content %}
+
+<div class="breadcrumb-section breadcrumb-bg">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="breadcrumb-text">
+					<p><a href="#" style="color:#fff;">Catalog</a></p>
+					<h1>{{ product.name }}</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="single-product mt-50 mb-50">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-5">
+				<div class="single-product-img">
+					{% with product.image.first as img %}
+						{% if img %}
+							<img src="{{ img.image.url }}" alt="{{ product.name }}">
+						{% else %}
+							<img src="{% static 'assets/img/products/product-img-5.jpg' %}" alt="{{ product.name }}">
+						{% endif %}
+					{% endwith %}
+				</div>
+				{% if product.image.count > 1 %}
+				<div class="row mt-3">
+					{% for img in product.image.all %}
+					<div class="col-3">
+						<img src="{{ img.image.url }}" alt="{{ product.name }}" class="img-fluid" style="cursor:pointer; border:2px solid #eee; padding:3px;">
+					</div>
+					{% endfor %}
+				</div>
+				{% endif %}
+			</div>
+			<div class="col-md-7">
+				<div class="single-product-content">
+					<h3>{{ product.name }}</h3>
+
+					{% if product.features %}
+					<p><strong>Features:</strong> {{ product.features }}</p>
+					{% endif %}
+
+					{% if product.dimensions %}
+					<p><strong>Dimensions:</strong> {{ product.dimensions }}</p>
+					{% endif %}
+
+					{% if product.colour %}
+					<p><strong>Colour:</strong> {{ product.colour }}</p>
+					{% endif %}
+
+					{% if product.certificate %}
+					<p><strong>Certificate:</strong> {{ product.certificate }}</p>
+					{% endif %}
+
+					{% if product.optional %}
+					<p><strong>Optional:</strong> {{ product.optional }}</p>
+					{% endif %}
+
+					<div class="mt-4">
+						<a href="#" class="boxed-btn">Request Quotation</a>
+					</div>
+
+					{% with product.variants.first as v %}
+						{% if v.data_sheet %}
+						<div class="mt-3">
+							<a href="{{ v.data_sheet.url }}" class="cart-btn" target="_blank"><i class="fas fa-file-pdf"></i> Download Datasheet</a>
+						</div>
+						{% endif %}
+					{% endwith %}
+				</div>
+			</div>
+		</div>
+
+		{% if product.variants.exists %}
+		<div class="row mt-5">
+			<div class="col-12">
+				<h4 class="mb-3">Available Variants</h4>
+				<div class="table-responsive">
+					<table class="table table-bordered">
+						<thead class="thead-dark">
+							<tr>
+								<th>SKU</th>
+								<th>Height (U)</th>
+								<th>Width (mm)</th>
+								<th>Depth (mm)</th>
+								<th>Height (mm)</th>
+								<th>Depth Rail (mm)</th>
+								<th>Static Load (kg)</th>
+								<th>Color</th>
+								<th>Datasheet</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for v in product.variants.all %}
+							{% if v.is_active %}
+							<tr>
+								<td>{{ v.sku }}</td>
+								<td>{% if v.height_U %}{{ v.height_U }}U{% else %}-{% endif %}</td>
+								<td>{{ v.width_mm }}</td>
+								<td>{{ v.depth_mm }}</td>
+								<td>{{ v.height_mm }}</td>
+								<td>{% if v.depth_rail_mm %}{{ v.depth_rail_mm }}{% else %}-{% endif %}</td>
+								<td>{% if v.static_load_kg %}{{ v.static_load_kg }}{% else %}-{% endif %}</td>
+								<td>{{ v.color }}</td>
+								<td>
+									{% if v.data_sheet %}
+									<a href="{{ v.data_sheet.url }}" target="_blank"><i class="fas fa-file-pdf"></i></a>
+									{% else %}-{% endif %}
+								</td>
+							</tr>
+							{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+
+{% if related_products %}
+<div class="more-products mb-50">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="section-title">
+					<h3><span class="orange-text">Other</span> Products</h3>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			{% for p in related_products %}
+			<div class="col-lg-4 col-md-6 text-center">
+				<div class="single-product-item">
+					<div class="product-image">
+						<a href="{% url 'product_detail' p.id %}">
+							{% with p.image.first as img %}
+								{% if img %}
+									<img src="{{ img.image.url }}" alt="{{ p.name }}">
+								{% else %}
+									<img src="{% static 'assets/img/products/product-img-1.jpg' %}" alt="{{ p.name }}">
+								{% endif %}
+							{% endwith %}
+						</a>
+					</div>
+					<h3>{{ p.name }}</h3>
+					<a href="{% url 'product_detail' p.id %}" class="cart-btn"><i class="fas fa-eye"></i> View Details</a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% endif %}
+
+{% endblock %}
