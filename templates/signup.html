@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign Up - GAMMA Factory{% endblock %}
+
+{% block content %}
+
+<div class="breadcrumb-section breadcrumb-bg">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="breadcrumb-text">
+					<p>Create your account</p>
+					<h1>Sign Up</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="contact-from-section mt-50 mb-50">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-5 col-md-7">
+				<div class="form-title">
+					<h2>Create Account</h2>
+					<p>Fill in the form below to create your account.</p>
+				</div>
+
+				{% if error %}
+				<div class="alert alert-danger mt-3 mb-3">{{ error }}</div>
+				{% endif %}
+
+				<div class="login-form">
+					<div class="contact-form">
+						<form method="POST">
+							{% csrf_token %}
+							<p><input type="text"     name="username"  placeholder="Username"          required></p>
+							<p><input type="email"    name="email"     placeholder="Email Address"     required></p>
+							<p><input type="password" name="password1" placeholder="Password"          required></p>
+							<p><input type="password" name="password2" placeholder="Confirm Password"  required></p>
+							<p><input type="submit" value="Create Account"></p>
+						</form>
+					</div>
+				</div>
+
+				<p style="text-align:center; margin-top:15px; font-size:14px;">
+					Already have an account? <a href="{% url 'login' %}" style="color:#F28123;">Login</a>
+				</p>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

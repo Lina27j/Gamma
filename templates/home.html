@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}GAMMA Factory - Industrial Metal Cabinets & Enclosures{% endblock %}
+
+{% block content %}
+
+<div class="hero-area">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-9 offset-lg-2 text-center">
+				<div class="hero-text">
+					<div class="hero-text-tablecell">
+						<p class="subtitle">Reliable . Precise . Built to Last</p>
+						<h1>Engineered to Perform</h1>
+						<div class="hero-btns">
+							<a href="#" class="boxed-btn">Explore Products</a>
+							<a href="#" class="bordered-btn">Request Quotation</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="list-section pt-80 pb-80">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+				<div class="list-box d-flex align-items-center">
+					<div class="list-icon">
+						<i class="fas fa-certificate"></i>
+					</div>
+					<div class="content">
+						<h3>ISO Certified</h3>
+						<p>ISO 9001 / 14001 Certified</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+				<div class="list-box d-flex align-items-center">
+					<div class="list-icon">
+						<i class="fas fa-industry"></i>
+					</div>
+					<div class="content">
+						<h3>Robotic Manufacturing</h3>
+						<p>Advanced automated production</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6">
+				<div class="list-box d-flex align-items-center">
+					<div class="list-icon">
+						<i class="fas fa-globe"></i>
+					</div>
+					<div class="content">
+						<h3>Global Export</h3>
+						<p>Delivered worldwide</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="product-section mt-50 mt-50">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="section-title">
+					<h3><span class="orange-text">Our</span> Products</h3>
+					<p>High-quality 19" cabinets and IP rated enclosures for data centers, telecom and industrial applications.</p>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			{% for product in products %}
+			<div class="col-lg-4 col-md-6 mb-4 d-flex">
+				<div class="single-product-item w-100 d-flex flex-column"
+					 style="border:1px solid #f0f0f0; border-radius:4px; overflow:hidden;">
+					<div class="product-image" style="height:220px; overflow:hidden;">
+						<a href="{% url 'product_detail' product.id %}">
+							{% with product.image.first as img %}
+								{% if img %}
+									<img src="{{ img.image.url }}" alt="{{ product.name }}"
+										 style="width:100%; height:220px; object-fit:cover;">
+								{% else %}
+									<img src="{% static 'assets/img/products/product-img-1.jpg' %}" alt="{{ product.name }}"
+										 style="width:100%; height:220px; object-fit:cover;">
+								{% endif %}
+							{% endwith %}
+						</a>
+					</div>
+					<div class="d-flex flex-column flex-grow-1" style="padding:20px 16px 16px;">
+						<h3 style="font-size:17px; margin-bottom:8px;">{{ product.name }}</h3>
+						<p style="font-size:13px; color:#666; flex-grow:1; margin-bottom:14px;">
+							{{ product.features|truncatechars:90 }}
+						</p>
+						<a href="{% url 'product_detail' product.id %}" class="cart-btn"
+						   style="align-self:center;">
+							<i class="fas fa-eye"></i> View Details
+						</a>
+					</div>
+				</div>
+			</div>
+			{% empty %}
+			<div class="col-12 text-center">
+				<p>No products available yet.</p>
+			</div>
+			{% endfor %}
+		</div>
+		<div class="row mt-5">
+			<div class="col-lg-12 text-center">
+				<a href="#" class="boxed-btn">View All Products</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="abt-section mb-50 mt-50">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 col-md-12">
+				<div class="abt-bg"></div>
+			</div>
+			<div class="col-lg-6 col-md-12">
+				<div class="abt-text">
+					<p class="top-sub">Since 2009</p>
+					<h2>We are <span class="orange-text">GAMMA</span></h2>
+					<p>GAMMA Factory for Metal Industries is a Saudi manufacturer specializing in 19" server cabinets, network enclosures, and IP rated outdoor cabinets. With over 15 years of experience and a 7,000 SQM factory, we deliver precision-engineered solutions to data centers, telecom operators, and industrial clients across the Kingdom and worldwide.</p>
+					<p>Our production facility uses advanced robotic manufacturing to ensure consistency, quality, and on-time delivery for every order.</p>
+					<a href="#" class="boxed-btn mt-4">View Products</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<section class="shop-banner">
+	<div class="container">
+		<h3>Looking for a custom solution? <br> Get your <span class="orange-text">quotation</span> today.</h3>
+		<a href="{% url 'quotation' %}" class="cart-btn btn-lg">Request Quotation</a>
+	</div>
+</section>
+
+{% endblock %}
