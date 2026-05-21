@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from product.models import Product
+from product.models import Product, Quotation
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from Client.models import Client
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -48,3 +50,15 @@ def signup_view(request):
             return redirect('/')
 
     return render(request, 'signup.html', {'error': error})
+
+@login_required(login_url='/login/')
+def dashboard(request):
+    client = Client.objects.filter(user=request.user).first()
+    quotations = Quotation.objects.filter(user=request.user).order_by('-submitted_at')
+    return render(request, 'dashboard.html', {
+        'client': client,
+        'quotations': quotations,
+    })
+
+def about(request):
+    return render(request, 'about.html')

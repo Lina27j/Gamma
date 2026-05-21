@@ -66,7 +66,7 @@
 					{% endif %}
 
 					<div class="mt-4">
-						<a href="#" class="boxed-btn">Request Quotation</a>
+						<a href="{% url 'quotation' %}" class="boxed-btn">Request Quotation</a>
 					</div>
 
 					{% with product.variants.first as v %}

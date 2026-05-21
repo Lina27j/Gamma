@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Product(models.Model):
     name                = models.CharField(max_length=200, null=False, verbose_name='Product Name')
@@ -96,6 +97,7 @@ class Quotation(models.Model):
     reference_file = models.FileField(upload_to='quotations/', blank=True, null=True)
     message        = models.TextField(blank=True)
     submitted_at   = models.DateTimeField(auto_now_add=True)
-
+    user           = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    
     def __str__(self):
         return f"{self.name} - {self.company}"

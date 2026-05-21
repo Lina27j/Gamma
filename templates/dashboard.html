@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - GAMMA Factory{% endblock %}
+
+{% block content %}
+
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Welcome, {{ user.username }}</p>
+                    <h1>My Dashboard</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="contact-from-section mt-50 mb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-5 mb-lg-0">
+                <div class="contact-form-wrap">
+                    <div class="contact-form-box">
+                        <h4><i class="fas fa-user"></i> Profile</h4>
+                        <p><strong>Username:</strong> {{ user.username }}</p>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        {% if client %}
+                        <p><strong>Name:</strong> {{ client.firstName }} {{ client.lastName }}</p>
+                        <p><strong>Phone:</strong> {{ client.phoneNum }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="contact-form-box">
+                        <h4><i class="fas fa-file-alt"></i> Summary</h4>
+                        <p><strong>Total Quotations:</strong> {{ quotations|length }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="form-title">
+                    <h2>My Quotations</h2>
+                    <p>All quotation requests submitted with your email address.</p>
+                </div>
+
+                {% if quotations %}
+                <div class="table-responsive mt-4">
+                    <table style="width:100%; border-collapse:collapse; font-size:14px;">
+                        <thead>
+                            <tr style="background:#f4a623; color:#fff; text-align:left;">
+                                <th style="padding:10px 12px;">#</th>
+                                <th style="padding:10px 12px;">Product</th>
+                                <th style="padding:10px 12px;">Qty</th>
+                                <th style="padding:10px 12px;">Material</th>
+                                <th style="padding:10px 12px;">Door</th>
+                                <th style="padding:10px 12px;">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for q in quotations %}
+                            <tr style="border-bottom:1px solid #eee;">
+                                <td style="padding:10px 12px;">{{ forloop.counter }}</td>
+                                <td style="padding:10px 12px;">{{ q.product.name|default:"—" }}</td>
+                                <td style="padding:10px 12px;">{{ q.quantity|default:"—" }}</td>
+                                <td style="padding:10px 12px;">{{ q.get_material_type_display|default:"—" }}</td>
+                                <td style="padding:10px 12px;">{{ q.get_door_type_display|default:"—" }}</td>
+                                <td style="padding:10px 12px;">{{ q.submitted_at|date:"d M Y" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="mt-4" style="padding:30px; background:#f9f9f9; border:1px solid #eee; border-radius:4px; text-align:center;">
+                    <p style="color:#888; margin:0;">No quotations found. <a href="{% url 'quotation' %}" style="color:#f4a623;">Request one now.</a></p>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

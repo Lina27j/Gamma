@@ -78,7 +78,8 @@ def quotation(request):
         except Product.DoesNotExist:
             pass
 
-        Quotation.objects.create(
+        saved = Quotation.objects.create(
+            user           = request.user if request.user.is_authenticated else None,
             name           = request.POST.get('name', ''),
             company        = request.POST.get('company', ''),
             email          = request.POST.get('email', ''),
@@ -94,10 +95,24 @@ def quotation(request):
         )
         success = True
 
+        datasheets = []
+        if product:
+            datasheets = list(product.variants.filter(is_active=True).exclude(data_sheet='').exclude(data_sheet=None))
+
+        return render(request, 'quotation.html', {
+            'products'        : products,
+            'products_json'   : json.dumps(products_data),
+            'success'         : True,
+            'saved'           : saved,
+            'datasheets'      : datasheets,
+            'material_choices': Quotation.MATERIAL_CHOICES,
+            'door_choices'    : Quotation.DOOR_CHOICES,
+        })
+
     return render(request, 'quotation.html', {
         'products'        : products,
         'products_json'   : json.dumps(products_data),
-        'success'         : success,
+        'success'         : False,
         'initial_product' : request.GET.get('product', ''),
         'material_choices': Quotation.MATERIAL_CHOICES,
         'door_choices'    : Quotation.DOOR_CHOICES,
