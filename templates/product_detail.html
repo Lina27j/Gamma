@@ -5,11 +5,11 @@
 
 {% block content %}
 
-<div class="breadcrumb-section breadcrumb-bg">
+<div class="page-top-banner">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 text-center">
-				<div class="breadcrumb-text">
+				<div class="page-top-banner-text">
 					<p><a href="#" style="color:#fff;">Catalog</a></p>
 					<h1>{{ product.name }}</h1>
 				</div>
@@ -18,11 +18,11 @@
 	</div>
 </div>
 
-<div class="single-product mt-50 mb-50">
+<div class="product-detail-section mt-50 mb-50">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-5">
-				<div class="single-product-img">
+				<div class="product-detail-image">
 					{% with product.image.first as img %}
 						{% if img %}
 							<img src="{{ img.image.url }}" alt="{{ product.name }}">
@@ -42,7 +42,7 @@
 				{% endif %}
 			</div>
 			<div class="col-md-7">
-				<div class="single-product-content">
+				<div class="product-detail-text">
 					<h3>{{ product.name }}</h3>
 
 					{% if product.features %}
@@ -66,13 +66,13 @@
 					{% endif %}
 
 					<div class="mt-4">
-						<a href="{% url 'quotation' %}" class="boxed-btn">Request Quotation</a>
+						<a href="{% url 'quotation' %}" class="button-orange">Request Quotation</a>
 					</div>
 
 					{% with product.variants.first as v %}
 						{% if v.data_sheet %}
 						<div class="mt-3">
-							<a href="{{ v.data_sheet.url }}" class="cart-btn" target="_blank"><i class="fas fa-file-pdf"></i> Download Datasheet</a>
+							<a href="{{ v.data_sheet.url }}" class="button-orange" target="_blank"><i class="fas fa-file-pdf"></i> Download Datasheet</a>
 						</div>
 						{% endif %}
 					{% endwith %}
@@ -129,20 +129,20 @@
 </div>
 
 {% if related_products %}
-<div class="more-products mb-50">
+<div class="related-products mb-50">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 text-center">
-				<div class="section-title">
-					<h3><span class="orange-text">Other</span> Products</h3>
+				<div class="section-heading">
+					<h3><span class="text-orange">Other</span> Products</h3>
 				</div>
 			</div>
 		</div>
 		<div class="row">
 			{% for p in related_products %}
 			<div class="col-lg-4 col-md-6 text-center">
-				<div class="single-product-item">
-					<div class="product-image">
+				<div class="product-card">
+					<div class="product-card-image">
 						<a href="{% url 'product_detail' p.id %}">
 							{% with p.image.first as img %}
 								{% if img %}
@@ -154,7 +154,7 @@
 						</a>
 					</div>
 					<h3>{{ p.name }}</h3>
-					<a href="{% url 'product_detail' p.id %}" class="cart-btn"><i class="fas fa-eye"></i> View Details</a>
+					<a href="{% url 'product_detail' p.id %}" class="button-orange"><i class="fas fa-eye"></i> View Details</a>
 				</div>
 			</div>
 			{% endfor %}

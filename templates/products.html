@@ -5,11 +5,11 @@
 
 {% block content %}
 
-<div class="breadcrumb-section breadcrumb-bg">
+<div class="page-top-banner">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 text-center">
-				<div class="breadcrumb-text">
+				<div class="page-top-banner-text">
 					<p>Industrial Metal Enclosures</p>
 					<h1>Product Catalog</h1>
 				</div>
@@ -18,25 +18,25 @@
 	</div>
 </div>
 
-<div class="product-section mt-50 mb-50">
+<div class="products-section mt-50 mb-50">
 	<div class="container">
 
-		<form class="search-form" method="GET" action="{% url 'products' %}">
+		<form class="product-search" method="GET" action="{% url 'products' %}">
 			<input type="text" name="search" placeholder="Search products..." value="{{ search }}">
 			{% if category != 'all' %}<input type="hidden" name="filter" value="{{ category }}">{% endif %}
 			<button type="submit"><i class="fas fa-search"></i> Search</button>
 		</form>
 
-		<div class="filter-btns">
-			<a href="{% url 'products' %}{% if search %}?search={{ search }}{% endif %}" class="filter-btn {% if category == 'all' %}active{% endif %}">All</a>
-			<a href="?filter=data-center{% if search %}&search={{ search }}{% endif %}" class="filter-btn {% if category == 'data-center' %}active{% endif %}">Data Center</a>
-			<a href="?filter=free-stand{% if search %}&search={{ search }}{% endif %}"  class="filter-btn {% if category == 'free-stand' %}active{% endif %}">Free Stand</a>
-			<a href="?filter=wall-mount{% if search %}&search={{ search }}{% endif %}"  class="filter-btn {% if category == 'wall-mount' %}active{% endif %}">Wall Mount</a>
-			<a href="?filter=outdoor{% if search %}&search={{ search }}{% endif %}"     class="filter-btn {% if category == 'outdoor' %}active{% endif %}">Outdoor</a>
-			<a href="?filter=telecom{% if search %}&search={{ search }}{% endif %}"     class="filter-btn {% if category == 'telecom' %}active{% endif %}">Telecom</a>
+		<div class="category-buttons">
+			<a href="{% url 'products' %}{% if search %}?search={{ search }}{% endif %}" class="category-button {% if category == 'all' %}active{% endif %}">All</a>
+			<a href="?filter=data-center{% if search %}&search={{ search }}{% endif %}" class="category-button {% if category == 'data-center' %}active{% endif %}">Data Center</a>
+			<a href="?filter=free-stand{% if search %}&search={{ search }}{% endif %}"  class="category-button {% if category == 'free-stand' %}active{% endif %}">Free Stand</a>
+			<a href="?filter=wall-mount{% if search %}&search={{ search }}{% endif %}"  class="category-button {% if category == 'wall-mount' %}active{% endif %}">Wall Mount</a>
+			<a href="?filter=outdoor{% if search %}&search={{ search }}{% endif %}"     class="category-button {% if category == 'outdoor' %}active{% endif %}">Outdoor</a>
+			<a href="?filter=telecom{% if search %}&search={{ search }}{% endif %}"     class="category-button {% if category == 'telecom' %}active{% endif %}">Telecom</a>
 		</div>
 
-		<p class="catalog-meta">
+		<p class="results-count">
 			Showing <span>{{ products.start_index }} – {{ products.end_index }}</span> of <span>{{ total }}</span> products
 			{% if search %} for "<em>{{ search }}</em>"{% endif %}
 		</p>
@@ -44,8 +44,8 @@
 		<div class="row">
 			{% for product in products %}
 			<div class="col-lg-4 col-md-6 mb-4 d-flex">
-				<div class="single-product-item w-100 d-flex flex-column" style="border:1px solid #f0f0f0; border-radius:4px; overflow:hidden;">
-					<div class="product-image" style="height:220px; overflow:hidden;">
+				<div class="product-card w-100 d-flex flex-column" style="border:1px solid #f0f0f0; border-radius:4px; overflow:hidden;">
+					<div class="product-card-image" style="height:220px; overflow:hidden;">
 						<a href="{% url 'product_detail' product.id %}">
 							{% with product.image.first as img %}
 								{% if img %}
@@ -63,7 +63,7 @@
 						{% else %}
 						<p style="flex-grow:1;"></p>
 						{% endif %}
-						<a href="{% url 'product_detail' product.id %}" class="cart-btn" style="align-self:center;"><i class="fas fa-eye"></i> View Details</a>
+						<a href="{% url 'product_detail' product.id %}" class="button-orange" style="align-self:center;"><i class="fas fa-eye"></i> View Details</a>
 					</div>
 				</div>
 			</div>
@@ -75,16 +75,16 @@
 		</div>
 
 		{% if products.paginator.num_pages > 1 %}
-		<div class="catalog-pagination">
+		<div class="page-numbers">
 			{% if products.has_previous %}
 			<a href="?page={{ products.previous_page_number }}{% if category != 'all' %}&filter={{ category }}{% endif %}{% if search %}&search={{ search }}{% endif %}">&laquo;</a>
 			{% else %}
-			<span class="disabled">&laquo;</span>
+			<span class="page-disabled">&laquo;</span>
 			{% endif %}
 
 			{% for num in products.paginator.page_range %}
 				{% if products.number == num %}
-				<span class="current">{{ num }}</span>
+				<span class="page-current">{{ num }}</span>
 				{% else %}
 				<a href="?page={{ num }}{% if category != 'all' %}&filter={{ category }}{% endif %}{% if search %}&search={{ search }}{% endif %}">{{ num }}</a>
 				{% endif %}
@@ -93,7 +93,7 @@
 			{% if products.has_next %}
 			<a href="?page={{ products.next_page_number }}{% if category != 'all' %}&filter={{ category }}{% endif %}{% if search %}&search={{ search }}{% endif %}">&raquo;</a>
 			{% else %}
-			<span class="disabled">&raquo;</span>
+			<span class="page-disabled">&raquo;</span>
 			{% endif %}
 		</div>
 		{% endif %}
