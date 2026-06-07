@@ -21,62 +21,122 @@
 <div class="page-section mt-50 mb-50">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 mb-5 mb-lg-0">
+
+            <!-- sidebar -->
+            <div class="col-lg-3 mb-5 mb-lg-0">
                 <div class="info-box">
                     <div class="info-row">
-                        <h4><i class="fas fa-user"></i> Profile</h4>
-                        <p><strong>Username:</strong> {{ user.username }}</p>
-                        <p><strong>Email:</strong> {{ user.email }}</p>
-                        {% if client %}
-                        <p><strong>Name:</strong> {{ client.firstName }} {{ client.lastName }}</p>
-                        <p><strong>Phone:</strong> {{ client.phoneNum }}</p>
-                        {% endif %}
+                        <h4><i class="fas fa-user"></i> {{ user.username }}</h4>
+                        <p style="color:#888; font-size:13px;">{{ user.email }}</p>
                     </div>
-                    <div class="info-row">
-                        <h4><i class="fas fa-file-alt"></i> Summary</h4>
-                        <p><strong>Total Quotations:</strong> {{ quotations|length }}</p>
-                    </div>
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        <li style="border-top:1px solid #eee;">
+                            <a href="{% url 'dashboard' %}" style="display:block; padding:12px 5px; color:#f4a623; font-weight:700;">
+                                <i class="fas fa-file-alt"></i> My Quotations
+                            </a>
+                        </li>
+                        <li style="border-top:1px solid #eee;">
+                            <a href="{% url 'update_profile' %}" style="display:block; padding:12px 5px; color:#333;">
+                                <i class="fas fa-user-edit"></i> Update Profile
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="col-lg-8">
+            <!-- quotations -->
+            <div class="col-lg-9">
+
                 <div class="form-heading">
                     <h2>My Quotations</h2>
-                    <p>All quotation requests submitted with your email address.</p>
+                    <p>All quotation requests submitted with your account.</p>
                 </div>
 
                 {% if quotations %}
-                <div class="table-responsive mt-4">
-                    <table style="width:100%; border-collapse:collapse; font-size:14px;">
-                        <thead>
-                            <tr style="background:#f4a623; color:#fff; text-align:left;">
-                                <th style="padding:10px 12px;">#</th>
-                                <th style="padding:10px 12px;">Product</th>
-                                <th style="padding:10px 12px;">Qty</th>
-                                <th style="padding:10px 12px;">Material</th>
-                                <th style="padding:10px 12px;">Door</th>
-                                <th style="padding:10px 12px;">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for q in quotations %}
-                            <tr style="border-bottom:1px solid #eee;">
-                                <td style="padding:10px 12px;">{{ forloop.counter }}</td>
-                                <td style="padding:10px 12px;">{{ q.product.name|default:"—" }}</td>
-                                <td style="padding:10px 12px;">{{ q.quantity|default:"—" }}</td>
-                                <td style="padding:10px 12px;">{{ q.get_material_type_display|default:"—" }}</td>
-                                <td style="padding:10px 12px;">{{ q.get_door_type_display|default:"—" }}</td>
-                                <td style="padding:10px 12px;">{{ q.submitted_at|date:"d M Y" }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+
+                    {% for q in quotations %}
+                    <div style="border:1px solid #eee; border-radius:4px; margin-bottom:30px;">
+
+                        <!-- quotation header row -->
+                        <div style="background:#f9f9f9; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                            <div>
+                                <strong>Quotation #{{ q.pk }}</strong>
+                                <span style="color:#888; font-size:13px; margin-left:12px;">{{ q.submitted_at|date:"d M Y" }}</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:10px;">
+
+                                <!-- status badge -->
+                                {% if q.status == 'pending' %}
+                                <span style="background:#6c757d; color:#fff; padding:3px 10px; border-radius:3px; font-size:12px;">Pending</span>
+                                {% elif q.status == 'in_review' %}
+                                <span style="background:#007bff; color:#fff; padding:3px 10px; border-radius:3px; font-size:12px;">In Review</span>
+                                {% elif q.status == 'quoted' %}
+                                <span style="background:#28a745; color:#fff; padding:3px 10px; border-radius:3px; font-size:12px;">Quoted</span>
+                                {% elif q.status == 'rejected' %}
+                                <span style="background:#dc3545; color:#fff; padding:3px 10px; border-radius:3px; font-size:12px;">Rejected</span>
+                                {% endif %}
+
+                                <!-- print button -->
+                                <a href="{% url 'quotation_print' q.pk %}" style="background:#f4a623; color:#fff; padding:4px 14px; border-radius:3px; font-size:13px; text-decoration:none;">
+                                    &#128438; Print
+                                </a>
+
+                            </div>
+                        </div>
+
+                        <!-- items table -->
+                        <div style="overflow-x:auto;">
+                            <table style="width:100%; border-collapse:collapse; font-size:13px;">
+                                <thead>
+                                    <tr style="background:#f4a623; color:#fff; text-align:left;">
+                                        <th style="padding:8px 10px;">#</th>
+                                        <th style="padding:8px 10px;">Product</th>
+                                        <th style="padding:8px 10px;">SKU</th>
+                                        <th style="padding:8px 10px;">Width</th>
+                                        <th style="padding:8px 10px;">Height</th>
+                                        <th style="padding:8px 10px;">Depth</th>
+                                        <th style="padding:8px 10px;">Colour</th>
+                                        <th style="padding:8px 10px;">Qty</th>
+                                        <th style="padding:8px 10px;">Material</th>
+                                        <th style="padding:8px 10px;">Door</th>
+                                        <th style="padding:8px 10px;">Accessories</th>
+                                        <th style="padding:8px 10px;">Note</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in q.items.all %}
+                                    <tr style="border-bottom:1px solid #eee;">
+                                        <td style="padding:8px 10px;">{{ forloop.counter }}</td>
+                                        <td style="padding:8px 10px;">{{ item.product.name|default:"-" }}</td>
+                                        <td style="padding:8px 10px;">{{ item.sku|default:"-" }}</td>
+                                        <td style="padding:8px 10px;">{{ item.width|default:"-" }}{% if item.width %} mm{% endif %}</td>
+                                        <td style="padding:8px 10px;">{{ item.height|default:"-" }}{% if item.height %}U{% endif %}</td>
+                                        <td style="padding:8px 10px;">{{ item.depth|default:"-" }}{% if item.depth %} mm{% endif %}</td>
+                                        <td style="padding:8px 10px;">{{ item.color|default:"-" }}</td>
+                                        <td style="padding:8px 10px;">{{ item.quantity }}</td>
+                                        <td style="padding:8px 10px;">{{ item.get_material_display|default:"-" }}</td>
+                                        <td style="padding:8px 10px;">{{ item.get_door_display|default:"-" }}</td>
+                                        <td style="padding:8px 10px;">{{ item.accessories|default:"-" }}</td>
+                                        <td style="padding:8px 10px;">{{ item.note|default:"-" }}</td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="12" style="padding:12px 10px; color:#888; text-align:center;">No products added.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+
                 {% else %}
                 <div class="mt-4" style="padding:30px; background:#f9f9f9; border:1px solid #eee; border-radius:4px; text-align:center;">
                     <p style="color:#888; margin:0;">No quotations found. <a href="{% url 'quotation' %}" style="color:#f4a623;">Request one now.</a></p>
                 </div>
                 {% endif %}
+
             </div>
 
         </div>

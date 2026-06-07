@@ -1,3 +1,6 @@
+/* --------------------------------
+   general styles - whole website
+-------------------------------- */
 
 html, body {
   height: 100%;
@@ -53,12 +56,12 @@ p:last-child {
   margin: 0;
 }
 
-
+/* orange text color used in titles */
 .text-orange {
   color: #F28123;
 }
 
-
+/* small spacing helpers */
 .mt-50 { margin-top: 50px; }
 .mb-50 { margin-bottom: 50px; }
 .pt-80 { padding-top: 80px; }
@@ -69,7 +72,7 @@ p:last-child {
    buttons
 -------------------------------- */
 
-
+/* the filled orange button */
 a.button-orange {
   font-family: 'Poppins', sans-serif;
   display: inline-block;
@@ -89,7 +92,7 @@ a.button-orange i {
   margin-right: 5px;
 }
 
-
+/* the outline button - transparent with orange border */
 a.button-outline {
   font-family: 'Poppins', sans-serif;
   display: inline-block;
@@ -105,7 +108,7 @@ a.button-outline:hover {
   color: #fff;
 }
 
-
+/* the submit button inside forms */
 input[type="submit"] {
   background-color: #F28123;
   color: #051922;
@@ -126,7 +129,7 @@ input[type="submit"]:hover {
 
 
 /* --------------------------------
-   loader 
+   loader - spinning circle when page opens
 -------------------------------- */
 
 .loader {
@@ -191,7 +194,7 @@ input[type="submit"]:hover {
 
 
 /* --------------------------------
-   navbar 
+   navbar - the top navigation bar
 -------------------------------- */
 
 .navbar {
@@ -203,7 +206,7 @@ input[type="submit"]:hover {
   transition: 0.3s;
 }
 
-
+/* flexbox keeps logo on the left and nav on the right in one line */
 .navbar-inner {
   display: flex;
   align-items: center;
@@ -216,7 +219,7 @@ input[type="submit"]:hover {
   flex-shrink: 0;
 }
 
-
+/* the nav links */
 nav.nav-links ul {
   margin: 0;
   padding: 0;
@@ -239,7 +242,39 @@ nav.nav-links ul li a:hover {
   color: #F28123;
 }
 
+/* dropdown */
+nav.nav-links ul li {
+  position: relative;
+}
 
+nav.nav-links ul li ul.dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #051922;
+  min-width: 180px;
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+  z-index: 9999;
+}
+
+nav.nav-links ul li:hover ul.dropdown {
+  display: block;
+}
+
+nav.nav-links ul li ul.dropdown li {
+  display: block;
+}
+
+nav.nav-links ul li ul.dropdown li a {
+  padding: 9px 16px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* navbar becomes dark when you scroll down */
 .sticky-wrapper {
   position: absolute;
   top: 0;
@@ -253,7 +288,7 @@ nav.nav-links ul li a:hover {
   padding: 15px 0;
 }
 
-
+/* mobile menu - these classes are added by the meanmenu plugin */
 .mean-container .mean-bar {
   background-color: transparent;
   position: absolute;
@@ -295,7 +330,7 @@ nav.mean-nav > ul > li:first-child > a {
 
 
 /* --------------------------------
-   footer 
+   footer - the bottom of every page
 -------------------------------- */
 
 .footer-main {
@@ -349,7 +384,7 @@ nav.mean-nav > ul > li:first-child > a {
   color: #fff;
 }
 
-
+/* the pages column has arrow bullets */
 .footer-links ul li {
   position: relative;
   padding-left: 20px;
@@ -373,7 +408,7 @@ nav.mean-nav > ul > li:first-child > a {
   color: #F28123;
 }
 
-
+/* copyright bar at the very bottom */
 .copyright {
   background-color: #051922;
   border-top: 1px solid #232a35;
@@ -387,7 +422,7 @@ nav.mean-nav > ul > li:first-child > a {
   font-size: 15px;
 }
 
-
+/* social media icons */
 .social-links ul {
   margin: 0;
   padding: 0;
@@ -413,7 +448,7 @@ nav.mean-nav > ul > li:first-child > a {
 
 
 /* --------------------------------
-   page banner 
+   page banner - dark image at top of inner pages
 -------------------------------- */
 
 .page-top-banner {
@@ -426,7 +461,7 @@ nav.mean-nav > ul > li:first-child > a {
   z-index: 1;
 }
 
-
+/* dark overlay on the banner image */
 .page-top-banner:after {
   content: "";
   position: absolute;
@@ -453,7 +488,7 @@ nav.mean-nav > ul > li:first-child > a {
   margin: 20px 0 0;
 }
 
-
+/* section heading used on home and product pages */
 .section-heading {
   margin-bottom: 80px;
 }
@@ -464,7 +499,7 @@ nav.mean-nav > ul > li:first-child > a {
   padding-bottom: 15px;
 }
 
-
+/* the small orange line under section titles */
 .section-heading h3:after {
   content: '';
   position: absolute;
@@ -490,7 +525,7 @@ nav.mean-nav > ul > li:first-child > a {
    home page
 -------------------------------- */
 
-/* hero */
+/* hero - the big image section at the top */
 .hero {
   height: 100%;
   position: relative;
@@ -560,7 +595,7 @@ nav.mean-nav > ul > li:first-child > a {
   margin-left: 15px;
 }
 
-
+/* the 3 feature boxes below the hero */
 .features-strip {
   background-color: #f5f5f5;
 }
@@ -580,7 +615,7 @@ nav.mean-nav > ul > li:first-child > a {
   opacity: 0.75;
 }
 
-
+/* the circle icon in each feature box */
 .feature-icon i {
   display: block;
   font-size: 24px;
@@ -633,7 +668,7 @@ nav.mean-nav > ul > li:first-child > a {
   opacity: 0.8;
 }
 
-
+/* the call to action banner at the bottom of home page */
 .cta-banner {
   position: relative;
   background-color: #f5f5f5;
@@ -653,7 +688,7 @@ nav.mean-nav > ul > li:first-child > a {
    products page
 -------------------------------- */
 
-/* the product card */
+/* the product card - each product in the grid */
 .product-card {
   margin-bottom: 30px;
   box-shadow: 0 0 20px #e4e4e4;
@@ -683,7 +718,7 @@ nav.mean-nav > ul > li:first-child > a {
   transition: 0.3s;
 }
 
-/* filter buttons */
+/* filter buttons - all, data center, outdoor... */
 .category-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -714,7 +749,7 @@ nav.mean-nav > ul > li:first-child > a {
   text-decoration: none;
 }
 
-/* the search bar of products page */
+/* the search bar at the top of products page */
 .product-search {
   display: flex;
   gap: 8px;
@@ -739,7 +774,7 @@ nav.mean-nav > ul > li:first-child > a {
   cursor: pointer;
 }
 
-
+/* the "showing 1-6 of 12 products" text */
 .results-count {
   font-size: 14px;
   color: #666;
@@ -751,7 +786,7 @@ nav.mean-nav > ul > li:first-child > a {
   color: #051922;
 }
 
-
+/* the page numbers at the bottom */
 .page-numbers {
   display: flex;
   justify-content: center;
@@ -777,7 +812,7 @@ nav.mean-nav > ul > li:first-child > a {
   color: #fff;
 }
 
-
+/* the current page number */
 .page-numbers .page-current {
   background: #F28123;
   border-color: #F28123;
@@ -785,7 +820,7 @@ nav.mean-nav > ul > li:first-child > a {
   font-weight: 700;
 }
 
-
+/* disabled arrow when there is no previous/next page */
 .page-numbers .page-disabled {
   color: #bbb;
   pointer-events: none;
@@ -827,7 +862,7 @@ nav.mean-nav > ul > li:first-child > a {
    forms - quotation, login, signup, dashboard
 -------------------------------- */
 
-
+/* the heading above a form */
 .form-heading {
   margin-bottom: 25px;
 }
@@ -841,17 +876,17 @@ nav.mean-nav > ul > li:first-child > a {
   line-height: 1.8;
 }
 
-
+/* two inputs side by side in one row */
 .form-wrapper form p input[type=text],
 .form-wrapper form p input[type=tel],
 .form-wrapper form p input[type=email] {
-  width: 100%;
+  width: 49%;
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 3px;
 }
 
-
+/* single full-width input */
 .form-wrapper form input[type=text],
 .form-wrapper form input[type=email],
 .form-wrapper form input[type=tel],
@@ -895,12 +930,12 @@ nav.mean-nav > ul > li:first-child > a {
   resize: none;
 }
 
-
+/* login and signup - make all inputs full width */
 .login-wrapper .form-wrapper form p input[type=text] {
   width: 100%;
 }
 
-
+/* the info box on the right of quotation and dashboard */
 .info-box {
   background-color: #fbfbfb;
   padding: 45px 30px;
@@ -935,7 +970,7 @@ nav.mean-nav > ul > li:first-child > a {
   opacity: 0.8;
 }
 
-
+/* number input */
 input[type="number"] {
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -954,7 +989,7 @@ input[type="number"] {
   margin-bottom: 5px;
 }
 
-
+/* a row with a select and a unit label like "mm" */
 .form-row {
   display: flex;
   align-items: center;
@@ -976,7 +1011,7 @@ input[type="number"] {
   white-space: nowrap;
 }
 
-
+/* each checkbox line */
 .checkbox-row {
   display: flex;
   align-items: center;
@@ -992,13 +1027,13 @@ input[type="number"] {
   margin: 0;
 }
 
-
+/* the horizontal line that divides the form */
 .form-divider {
   border-top: 1px solid #eee;
   margin: 25px 0;
 }
 
-
+/* the submit button area */
 .form-submit {
   text-align: right;
 }
@@ -1022,10 +1057,10 @@ input[type="number"] {
 
 
 /* --------------------------------
-   quotation page
+   quotation page - step boxes
 -------------------------------- */
 
-
+/* each step is inside a box */
 .step-box {
   background: #f9f9f9;
   border: 1px solid #eee;
@@ -1043,7 +1078,7 @@ input[type="number"] {
   border-bottom: 2px solid #F28123;
 }
 
-
+/* the orange "Add Product" button */
 .add-product-btn {
   background-color: #F28123;
   color: #fff;
@@ -1061,7 +1096,7 @@ input[type="number"] {
   background-color: #051922;
 }
 
-
+/* the counter text "✓ 2 product(s) added" */
 .product-counter {
   color: #27ae60;
   font-weight: 700;
@@ -1069,13 +1104,13 @@ input[type="number"] {
   font-size: 15px;
 }
 
-
+/* the box that holds the product list table */
 .product-list-box {
   margin-top: 20px;
   overflow-x: auto;
 }
 
-
+/* the product list table */
 .product-list-table {
   width: 100%;
   border-collapse: collapse;
@@ -1099,7 +1134,7 @@ input[type="number"] {
   background-color: #f4f4f4;
 }
 
-
+/* the red remove button in each row */
 .remove-btn {
   background: #e74c3c;
   color: #fff;
@@ -1119,7 +1154,7 @@ input[type="number"] {
    quotation print page
 -------------------------------- */
 
-
+/* the two buttons at the top - hidden when printing */
 .print-buttons {
   text-align: center;
   margin-bottom: 30px;
@@ -1163,7 +1198,7 @@ input[type="number"] {
   color: #fff;
 }
 
-
+/* the top bar - company name on the left, reference on the right */
 .print-header {
   display: flex;
   justify-content: space-between;
@@ -1185,7 +1220,7 @@ input[type="number"] {
   font-size: 13px;
 }
 
-
+/* the reference number box on the right */
 .quotation-ref {
   text-align: right;
 }
@@ -1202,7 +1237,7 @@ input[type="number"] {
   color: #555;
 }
 
-
+/* the customer info box */
 .customer-box {
   background: #f9f9f9;
   border: 1px solid #eee;
@@ -1230,7 +1265,7 @@ input[type="number"] {
   color: #051922;
 }
 
-
+/* the products table */
 .products-table {
   width: 100%;
   border-collapse: collapse;
@@ -1251,12 +1286,12 @@ input[type="number"] {
   font-size: 14px;
 }
 
-
+/* alternating row color */
 .products-table tr:nth-child(even) td {
   background-color: #f9f9f9;
 }
 
-
+/* the options box (material, door, accessories) */
 .options-box {
   border: 1px solid #eee;
   border-radius: 5px;
@@ -1281,7 +1316,7 @@ input[type="number"] {
   font-weight: 700;
 }
 
-
+/* the small note at the very bottom */
 .print-footer {
   border-top: 1px solid #eee;
   padding-top: 15px;
@@ -1290,7 +1325,7 @@ input[type="number"] {
   text-align: center;
 }
 
-
+/* hide the buttons when the user clicks Print */
 @media print {
   .print-buttons { display: none; }
 }

@@ -35,10 +35,22 @@
 					<div class="form-wrapper">
 						<form method="POST">
 							{% csrf_token %}
-							<p><input type="text"     name="username"  placeholder="Username"         required></p>
-							<p><input type="email"    name="email"     placeholder="Email Address"    required></p>
-							<p><input type="password" name="password1" placeholder="Password"         required></p>
-							<p><input type="password" name="password2" placeholder="Confirm Password" required></p>
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<input type="text" name="username" placeholder="Username" required>
+								</div>
+								<div class="col-md-6">
+									<input type="email" name="email" placeholder="Email Address" required>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<input type="password" name="password1" placeholder="Password" required>
+								</div>
+								<div class="col-md-6">
+									<input type="password" name="password2" placeholder="Confirm Password" required>
+								</div>
+							</div>
 							<p><input type="submit" value="Create Account"></p>
 						</form>
 					</div>

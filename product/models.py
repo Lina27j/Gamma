@@ -8,6 +8,7 @@ class Product(models.Model):
     features            = models.TextField(null=False, default='')
     certificate         = models.TextField(null=False, default='')
     optional            = models.TextField(blank=True, default='')
+    catalogue           = models.FileField(upload_to='catalogue/', blank=True, null=True)
     
     
    
@@ -71,6 +72,30 @@ class Image(models.Model):
 
 class Quotation(models.Model):
 
+    name           = models.CharField(max_length=100)
+    company        = models.CharField(max_length=100)
+    email          = models.EmailField()
+    phone          = models.CharField(max_length=20, blank=True)
+    STATUS_CHOICES = [
+        ('pending',   'Pending'),
+        ('in_review', 'In Review'),
+        ('quoted',    'Quoted'),
+        ('rejected',  'Rejected'),
+    ]
+
+    submitted_at   = models.DateTimeField(auto_now_add=True)
+    user           = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    
+    status         = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    
+    tracking_code  = models.CharField(max_length=20, blank=True)
+    
+    def __str__(self):
+        return f"{self.name} - {self.company}"
+
+
+class QuotationItem(models.Model):
+
     MATERIAL_CHOICES = [
         ('galvanised', 'Galvanised'),
         ('steel',      'Steel'),
@@ -79,25 +104,32 @@ class Quotation(models.Model):
     ]
 
     DOOR_CHOICES = [
-        ('glass',       'Glass'),
-        ('metal',       'Metal'),
-        ('perforated',  'Perforated'),
+        ('glass',      'Glass'),
+        ('metal',      'Metal'),
+        ('perforated', 'Perforated'),
     ]
 
-    name           = models.CharField(max_length=100)
-    company        = models.CharField(max_length=100)
-    email          = models.EmailField()
-    phone          = models.CharField(max_length=20, blank=True)
-    product        = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)
-    quantity       = models.PositiveIntegerField(null=True, blank=True)
-    number_of_fans = models.PositiveIntegerField(null=True, blank=True)
-    material_type  = models.CharField(max_length=20, choices=MATERIAL_CHOICES, blank=True)
-    door_type      = models.CharField(max_length=20, choices=DOOR_CHOICES, blank=True)
-    accessories    = models.TextField(blank=True)
-    reference_file = models.FileField(upload_to='quotations/', blank=True, null=True)
-    message        = models.TextField(blank=True)
-    submitted_at   = models.DateTimeField(auto_now_add=True)
-    user           = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     
+    quotation   = models.ForeignKey(Quotation, on_delete=models.CASCADE, related_name='items')
+
+    
+    product     = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)
+
+    
+    width       = models.CharField(max_length=20, blank=True)
+    height      = models.CharField(max_length=20, blank=True)
+    depth       = models.CharField(max_length=20, blank=True)
+    color       = models.CharField(max_length=50, blank=True)
+    quantity    = models.PositiveIntegerField(default=1)
+
+    
+    material    = models.CharField(max_length=20, choices=MATERIAL_CHOICES, blank=True)
+    door        = models.CharField(max_length=20, choices=DOOR_CHOICES, blank=True)
+    accessories = models.TextField(blank=True)
+    note        = models.TextField(blank=True)
+
+    
+    sku         = models.CharField(max_length=100, blank=True)
+
     def __str__(self):
-        return f"{self.name} - {self.company}"
+        return f"Item #{self.pk} for Quotation #{self.quotation.pk}"

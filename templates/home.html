@@ -16,6 +16,11 @@
 						<div class="hero-buttons">
 							<a href="{% url 'products' %}" class="button-orange">Explore Products</a>
 							<a href="{% url 'quotation' %}" class="button-outline">Request Quotation</a>
+							{% if company.catalogue %}
+							<a href="{{ company.catalogue.url }}" class="button-outline" target="_blank">
+								<i class="fas fa-file-pdf"></i> Download Catalogue
+							</a>
+							{% endif %}
 						</div>
 					</div>
 				</div>
@@ -130,7 +135,11 @@
 					<h2>We are <span class="text-orange">GAMMA</span></h2>
 					<p>GAMMA Factory for Metal Industries is a Saudi manufacturer specializing in 19" server cabinets, network enclosures, and IP rated outdoor cabinets. With over 15 years of experience and a 7,000 SQM factory, we deliver precision-engineered solutions to data centers, telecom operators, and industrial clients across the Kingdom and worldwide.</p>
 					<p>Our production facility uses advanced robotic manufacturing to ensure consistency, quality, and on-time delivery for every order.</p>
-					<a href="{% url 'products' %}" class="button-orange mt-4">View Products</a>
+					{% if company.catalogue %}
+					<a href="{{ company.catalogue.url }}" class="button-orange mt-4" target="_blank">
+						<i class="fas fa-file-pdf"></i> Download Catalogue
+					</a>
+					{% endif %}
 				</div>
 			</div>
 		</div>
@@ -139,8 +148,8 @@
 
 <section class="cta-banner">
 	<div class="container">
-		<h3>Looking for a custom solution? <br> Get your <span class="text-orange">quotation</span> today.</h3>
-		<a href="{% url 'quotation' %}" class="button-orange" style="margin-top:20px; display:inline-block;">Request Quotation</a>
+		<h3>Already submitted a request? <br> Track your <span class="text-orange">quotation</span> status.</h3>
+		<a href="{% url 'tracking' %}" class="button-orange" style="margin-top:20px; display:inline-block;">Track Your Quotation</a>
 	</div>
 </section>
 

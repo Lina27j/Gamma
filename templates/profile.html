@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Update Profile - GAMMA Factory{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
+<style>
+    .iti { width: 100%; }
+    .iti input { width: 100%; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="page-top-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="page-top-banner-text">
+                    <p>Welcome, {{ user.username }}</p>
+                    <h1>My Dashboard</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-section mt-50 mb-50">
+    <div class="container">
+        <div class="row">
+
+            <!-- sidebar -->
+            <div class="col-lg-3 mb-5 mb-lg-0">
+                <div class="info-box">
+                    <div class="info-row">
+                        <h4><i class="fas fa-user"></i> {{ user.username }}</h4>
+                        <p style="color:#888; font-size:13px;">{{ user.email }}</p>
+                    </div>
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        <li style="border-top:1px solid #eee;">
+                            <a href="{% url 'dashboard' %}" style="display:block; padding:12px 5px; color:#333;">
+                                <i class="fas fa-file-alt"></i> My Quotations
+                            </a>
+                        </li>
+                        <li style="border-top:1px solid #eee;">
+                            <a href="{% url 'update_profile' %}" style="display:block; padding:12px 5px; color:#f4a623; font-weight:700;">
+                                <i class="fas fa-user-edit"></i> Update Profile
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- profile form -->
+            <div class="col-lg-9">
+                <div class="form-heading">
+                    <h2>Update Profile</h2>
+                    <p>Update your personal information below.</p>
+                </div>
+
+                {% if success %}
+                <div style="padding:15px; background:#d4edda; border:1px solid #c3e6cb; border-radius:4px; margin-bottom:20px;">
+                    <p style="margin:0; color:#155724;">Profile updated successfully.</p>
+                </div>
+                {% endif %}
+
+                <div id="phone-error" style="display:none; padding:15px; background:#f8d7da; border:1px solid #f5c6cb; border-radius:4px; margin-bottom:20px;">
+                    <p style="margin:0; color:#721c24;">Please enter a valid phone number.</p>
+                </div>
+
+                <div class="form-wrapper">
+                    <form method="POST" id="profile-form">
+                        {% csrf_token %}
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <input type="text" name="first_name" placeholder="First Name" value="{{ client.firstName }}">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" name="last_name" placeholder="Last Name" value="{{ client.lastName }}">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <input type="text" name="company" placeholder="Company Name" value="{{ client.company }}">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="tel" id="phone_input" placeholder="5X XXX XXXX" value="{{ client.phoneNum }}">
+                                <input type="hidden" name="phone" id="phone_hidden">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <input type="email" name="email" placeholder="Email Address" value="{{ user.email }}">
+                            </div>
+                        </div>
+
+                        <p class="form-submit">
+                            <input type="submit" value="Save Changes">
+                        </p>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+<script>
+var phone_input = document.getElementById('phone_input');
+
+var iti = window.intlTelInput(phone_input, {
+    initialCountry  : 'sa',
+    separateDialCode: true,
+    utilsScript     : 'https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js',
+});
+
+document.getElementById('profile-form').addEventListener('submit', function(e) {
+    var errorBox = document.getElementById('phone-error');
+
+    if (phone_input.value.trim() !== '' && !iti.isValidNumber()) {
+        e.preventDefault();
+        errorBox.style.display = 'block';
+        phone_input.focus();
+        return;
+    }
+
+    errorBox.style.display = 'none';
+    document.getElementById('phone_hidden').value = iti.getNumber();
+});
+</script>
+{% endblock %}

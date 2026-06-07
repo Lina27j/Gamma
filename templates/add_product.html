@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Add Products - GAMMA Factory{% endblock %}
+
+{% block content %}
+
+<div class="page-top-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="page-top-banner-text">
+                    <p>Quotation #{{ my_quotation.pk }} — {{ my_quotation.name }}</p>
+                    <h1>Step 2 — Add Products</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-section mt-50 mb-50">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-8 mb-5 mb-lg-0">
+
+                <!-- list of products already added -->
+                {% if added_items %}
+                <div class="form-heading">
+                    <h2>Products Added ({{ added_items|length }})</h2>
+                </div>
+                <div class="table-responsive mb-4">
+                    <table style="width:100%; border-collapse:collapse; font-size:14px;">
+                        <thead>
+                            <tr style="background:#f4a623; color:#fff; text-align:left;">
+                                <th style="padding:8px 10px;">#</th>
+                                <th style="padding:8px 10px;">Product</th>
+                                <th style="padding:8px 10px;">Size</th>
+                                <th style="padding:8px 10px;">Colour</th>
+                                <th style="padding:8px 10px;">Qty</th>
+                                <th style="padding:8px 10px;">Material</th>
+                                <th style="padding:8px 10px;">Door</th>
+                                <th style="padding:8px 10px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in added_items %}
+                            <tr style="border-bottom:1px solid #eee;">
+                                <td style="padding:8px 10px;">{{ forloop.counter }}</td>
+                                <td style="padding:8px 10px;">{{ item.product.name|default:"—" }}</td>
+                                <td style="padding:8px 10px;">
+                                    {{ item.width|default:"—" }}{% if item.width %} × {% endif %}{{ item.height|default:"" }}{% if item.height %} × {% endif %}{{ item.depth|default:"" }}{% if item.depth %} mm{% endif %}
+                                </td>
+                                <td style="padding:8px 10px;">{{ item.color|default:"—" }}</td>
+                                <td style="padding:8px 10px;">{{ item.quantity }}</td>
+                                <td style="padding:8px 10px;">{{ item.get_material_display|default:"—" }}</td>
+                                <td style="padding:8px 10px;">{{ item.get_door_display|default:"—" }}</td>
+                                <td style="padding:8px 10px;">
+                                    <!-- simple form button to remove this item -->
+                                    <form method="POST" action="{% url 'remove_item' item.pk %}">
+                                        {% csrf_token %}
+                                        <button type="submit" style="background:#e74c3c; color:#fff; border:none; padding:4px 10px; border-radius:3px; cursor:pointer; font-size:12px;">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- finish button -->
+                <div class="mb-5">
+                    <a href="{% url 'quotation_print' my_quotation.pk %}" class="button-orange">Finish & Submit Quotation</a>
+                </div>
+                {% endif %}
+
+                <!-- form to add one product -->
+                <div class="form-heading">
+                    <h2>Add a Product</h2>
+                    <p>Fill in the details below and click "Add Product". You can add as many products as you need.</p>
+                </div>
+
+                <!-- step A: pick a product - GET form, page reloads and Django sends the variants -->
+                <div class="form-wrapper">
+                    <form method="GET">
+                        <p>
+                            <label class="form-label">Cabinet Type:</label>
+                            <select name="product_id" onchange="this.form.submit()">
+                                <option value="">-- Select a product --</option>
+                                {% for p in all_products %}
+                                <option value="{{ p.id }}" {% if selected_product.id == p.id %}selected{% endif %}>{{ p.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </p>
+                    </form>
+                </div>
+
+                <!-- step B: once a product is chosen, show the full form -->
+                {% if error %}
+                <div style="padding:15px; background:#f8d7da; border:1px solid #f5c6cb; border-radius:4px; margin-bottom:20px;">
+                    <p style="margin:0; color:#721c24;">{{ error }}</p>
+                </div>
+                {% endif %}
+
+                {% if selected_product %}
+                <div class="form-wrapper">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- pass the picked product to Django -->
+                        <input type="hidden" name="product" value="{{ selected_product.id }}">
+
+                        <!-- dimensions: Django puts the standard sizes in the datalist -->
+                        <!-- the user can pick one or type any custom value -->
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Width (mm):</label>
+                                <input type="text" name="width" list="width_list" placeholder="e.g. 600">
+                                <datalist id="width_list">
+                                    {% for w in width_list %}
+                                    <option value="{{ w }}">{{ w }} mm</option>
+                                    {% endfor %}
+                                </datalist>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Height (U):</label>
+                                <input type="text" name="height" list="height_list" placeholder="e.g. 42">
+                                <datalist id="height_list">
+                                    {% for h in height_list %}
+                                    <option value="{{ h }}">{{ h }} mm</option>
+                                    {% endfor %}
+                                </datalist>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Depth (mm):</label>
+                                <input type="text" name="depth" list="depth_list" placeholder="e.g. 600">
+                                <datalist id="depth_list">
+                                    {% for d in depth_list %}
+                                    <option value="{{ d }}">{{ d }} mm</option>
+                                    {% endfor %}
+                                </datalist>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Quantity:</label>
+                                <input type="number" name="quantity" value="1" min="1">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Colour:</label>
+                                <input type="text" name="color" list="color_list" placeholder="e.g. RAL 9005">
+                                <datalist id="color_list">
+                                    {% for c in color_list %}
+                                    <option value="{{ c }}">{{ c }}</option>
+                                    {% endfor %}
+                                </datalist>
+                            </div>
+                        </div>
+
+                        <div class="form-divider"></div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Type of material:</label>
+                                <select name="material">
+                                    <option value="">-- Select --</option>
+                                    {% for val, label in material_choices %}
+                                    <option value="{{ val }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Type of door:</label>
+                                <select name="door">
+                                    <option value="">-- Select --</option>
+                                    {% for val, label in door_choices %}
+                                    <option value="{{ val }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <p>
+                            <label class="form-label">Additional accessories:</label>
+                            <div class="checkbox-row"><input type="checkbox" name="accessories" value="Patch Panel" id="acc1"><label for="acc1">Patch Panel</label></div>
+                            <div class="checkbox-row"><input type="checkbox" name="accessories" value="Cable Management" id="acc2"><label for="acc2">Cable Management</label></div>
+                            <div class="checkbox-row"><input type="checkbox" name="accessories" value="Power Distribution Unit" id="acc3"><label for="acc3">Power Distribution Unit (PDU)</label></div>
+                            <div class="checkbox-row"><input type="checkbox" name="accessories" value="Fan Tray" id="acc4"><label for="acc4">Fan Tray</label></div>
+                            <div class="checkbox-row"><input type="checkbox" name="accessories" value="Blanking Panels" id="acc5"><label for="acc5">Blanking Panels</label></div>
+                        </p>
+
+                        <p>
+                            <label class="form-label">Special note for this product:</label>
+                            <textarea name="note" rows="3" placeholder="Any specific requirements for this product..."></textarea>
+                        </p>
+
+                        <p>
+                            <label class="form-label">Upload a reference file (optional):</label>
+                            <input type="file" name="reference_file">
+                        </p>
+
+                        <p class="form-submit">
+                            <input type="submit" value="Add Product">
+                        </p>
+
+                    </form>
+                </div>
+                {% endif %}
+
+                {% if added_items %}
+                <div class="mt-4">
+                    <a href="{% url 'quotation_print' my_quotation.pk %}" class="button-orange">Finish & Submit Quotation</a>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <div class="col-lg-4">
+                <div class="info-box">
+                    <div class="info-row">
+                        <h4><i class="fas fa-user"></i> Your Information</h4>
+                        <p><strong>Name:</strong> {{ my_quotation.name }}</p>
+                        <p><strong>Company:</strong> {{ my_quotation.company }}</p>
+                        <p><strong>Email:</strong> {{ my_quotation.email }}</p>
+                        {% if my_quotation.phone %}
+                        <p><strong>Phone:</strong> {{ my_quotation.phone }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="info-row">
+                        <h4><i class="fas fa-info-circle"></i> How it works</h4>
+                        <p>Add each product one by one. When you are done, click <strong>Finish & Submit Quotation</strong>.</p>
+                    </div>
+                    <div class="info-row">
+                        <h4><i class="fas fa-key"></i> Your Tracking Code</h4>
+                        <p style="font-size:22px; font-weight:700; letter-spacing:3px; color:#f4a623;">{{ my_quotation.tracking_code }}</p>
+                        <p style="font-size:13px;">Save this code to track your quotation status at <strong>/tracking/</strong></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+

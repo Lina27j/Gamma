@@ -12,9 +12,9 @@
                 <div class="footer-column">
                     <h2 class="footer-heading">Get in Touch</h2>
                     <ul>
-                        <li>Saudi Arabia</li>
-                        <li>info@gammafactory.com</li>
-                        <li>+966 XX XXX XXXX</li>
+                        {% if company.address %}<li>{{ company.address }}</li>{% endif %}
+                        {% if company.email %}<li>{{ company.email }}</li>{% endif %}
+                        {% if company.phone %}<li>{{ company.phone }}</li>{% endif %}
                     </ul>
                 </div>
             </div>
@@ -25,7 +25,9 @@
                         <li><a href="{% url 'home' %}">Home</a></li>
                         <li><a href="{% url 'products' %}">Products</a></li>
                         <li><a href="{% url 'about' %}">About</a></li>
+                        <li><a href="{% url 'contact' %}">Contact</a></li>
                         <li><a href="{% url 'quotation' %}">Request Quotation</a></li>
+                        <li><a href="{% url 'tracking' %}">Track Quotation</a></li>
                     </ul>
                 </div>
             </div>

@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Track Quotation - GAMMA Factory{% endblock %}
+
+{% block content %}
+
+<div class="page-top-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="page-top-banner-text">
+                    <p>Check Your Request Status</p>
+                    <h1>Track Quotation</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-section mt-50 mb-50">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-8 mb-5 mb-lg-0">
+
+                <div class="form-heading">
+                    <h2>Track Your Quotation</h2>
+                    <p>Enter the quotation number you received after submitting your request.</p>
+                </div>
+
+                <div class="form-wrapper">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <p>
+                            <label class="form-label">Tracking Code:</label>
+                            <input type="text" name="quotation_number" placeholder="e.g. X7K2M9PQ" style="text-transform:uppercase;" required>
+                        </p>
+                        <p class="form-submit">
+                            <input type="submit" value="Track">
+                        </p>
+                    </form>
+                </div>
+
+                {% if error %}
+                <div class="mt-4" style="padding:20px; background:#fff3cd; border:1px solid #ffc107; border-radius:4px;">
+                    <p style="margin:0; color:#856404;">{{ error }}</p>
+                </div>
+                {% endif %}
+
+                {% if quotation %}
+                <div class="mt-4">
+                    <div class="info-box">
+
+                        <div class="info-row">
+                            <h4><i class="fas fa-file-alt"></i> Quotation #{{ quotation.id }}</h4>
+                            <p><strong>Submitted:</strong> {{ quotation.submitted_at|date:"d M Y" }}</p>
+                            <p><strong>Name:</strong> {{ quotation.name }}</p>
+                            <p><strong>Company:</strong> {{ quotation.company }}</p>
+                        </div>
+
+                        <div class="info-row">
+                            <h4><i class="fas fa-boxes"></i> Products Requested</h4>
+                            {% if all_items %}
+                            <table style="width:100%; border-collapse:collapse; font-size:14px;">
+                                <thead>
+                                    <tr style="background:#f4a623; color:#fff; text-align:left;">
+                                        <th style="padding:8px 10px;">#</th>
+                                        <th style="padding:8px 10px;">Product</th>
+                                        <th style="padding:8px 10px;">SKU</th>
+                                        <th style="padding:8px 10px;">Width</th>
+                                        <th style="padding:8px 10px;">Height</th>
+                                        <th style="padding:8px 10px;">Depth</th>
+                                        <th style="padding:8px 10px;">Colour</th>
+                                        <th style="padding:8px 10px;">Qty</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in all_items %}
+                                    <tr style="border-bottom:1px solid #eee;">
+                                        <td style="padding:8px 10px;">{{ forloop.counter }}</td>
+                                        <td style="padding:8px 10px;">{{ item.product.name|default:"—" }}</td>
+                                        <td style="padding:8px 10px;">{{ item.sku|default:"—" }}</td>
+                                        <td style="padding:8px 10px;">{{ item.width|default:"—" }}{% if item.width %} mm{% endif %}</td>
+                                        <td style="padding:8px 10px;">{{ item.height|default:"—" }}{% if item.height %}U{% endif %}</td>
+                                        <td style="padding:8px 10px;">{{ item.depth|default:"—" }}{% if item.depth %} mm{% endif %}</td>
+                                        <td style="padding:8px 10px;">{{ item.color|default:"—" }}</td>
+                                        <td style="padding:8px 10px;">{{ item.quantity }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <p>No products added to this quotation yet.</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="info-row">
+                            <h4><i class="fas fa-info-circle"></i> Status</h4>
+                            {% if quotation.status == 'pending' %}
+                            <span style="background:#6c757d; color:#fff; padding:5px 14px; border-radius:3px; font-size:14px;">Pending</span>
+                            {% elif quotation.status == 'in_review' %}
+                            <span style="background:#007bff; color:#fff; padding:5px 14px; border-radius:3px; font-size:14px;">In Review</span>
+                            {% elif quotation.status == 'quoted' %}
+                            <span style="background:#28a745; color:#fff; padding:5px 14px; border-radius:3px; font-size:14px;">Quoted</span>
+                            {% elif quotation.status == 'rejected' %}
+                            <span style="background:#dc3545; color:#fff; padding:5px 14px; border-radius:3px; font-size:14px;">Rejected</span>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <div class="col-lg-4">
+                <div class="info-box">
+                    <div class="info-row">
+                        <h4><i class="fas fa-question-circle"></i> Where is my code?</h4>
+                        <p>Your tracking code is shown on the confirmation page after you submit your request. It looks like this: <strong style="letter-spacing:2px;">X7K2M9PQ</strong></p>
+                    </div>
+                    <div class="info-row">
+                        <h4><i class="far fa-clock"></i> Response Time</h4>
+                        <p>Our team reviews quotation requests within 1–2 business days.</p>
+                    </div>
+                    <div class="info-row">
+                        <h4><i class="fas fa-address-book"></i> Need Help?</h4>
+                        <p>
+                            {% if company.email %}Email: {{ company.email }}{% endif %}
+                            {% if company.email and company.phone %}<br>{% endif %}
+                            {% if company.phone %}Phone: {{ company.phone }}{% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
